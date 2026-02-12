@@ -30,7 +30,7 @@ import { useAuth } from '../context/AuthContext';
  * ────────────────────────────────────────────────────────
  */
 
-const SOCKET_URL = import.meta.env.VITE_SERVER_URL || 'http://localhost:5000';
+const SOCKET_URL = import.meta.env.VITE_SERVER_URL || 'https://synapt-server.onrender.com';
 const HLS_SERVER = import.meta.env.VITE_HLS_SERVER || 'http://localhost:8000';
 
 export const LiveStream = () => {

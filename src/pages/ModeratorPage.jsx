@@ -5,7 +5,7 @@ import { Button } from '../components/ui/button';
 import { io } from 'socket.io-client';
 import { toast } from 'sonner';
 
-const API_URL = import.meta.env.VITE_SERVER_URL || 'http://localhost:5000';
+const API_URL = import.meta.env.VITE_SERVER_URL || 'https://synapt-server.onrender.com';
 
 export const AdminDashboard = () => {
     const [stats, setStats] = useState({

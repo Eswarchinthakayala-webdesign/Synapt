@@ -2,7 +2,7 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 
 const AuthContext = createContext(null);
 
-const API_URL = 'http://localhost:5000/api';
+const API_URL = import.meta.env.VITE_API_URL || 'https://synapt-server.onrender.com/api';
 
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
