@@ -1,0 +1,14 @@
+START
+step1: checking bcryptjs
+step2: bcrypt loaded, hash type: function
+step3: checking user model
+step4: user model loaded
+step5: checking auth middleware
+step6: auth middleware loaded
+step7: checking auth route
+step8: auth route loaded
+step9: checking streams route
+step10: streams route loaded
+step11: checking sockets
+step12: sockets loaded
+ALL OK

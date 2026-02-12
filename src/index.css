@@ -58,6 +58,10 @@
     animation: bounce-slow 6s ease-in-out infinite;
   }
 
+  .animate-spin-slow {
+    animation: spin 12s linear infinite;
+  }
+
   .glass {
     @apply bg-foreground/[0.03] backdrop-blur-xl border border-foreground/[0.08] ring-1 ring-inset ring-foreground/[0.05];
   }
@@ -123,6 +127,11 @@
 @keyframes pulse {
   0%, 100% { opacity: 0.3; }
   50% { opacity: 0.6; }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
 :root {
@@ -197,6 +206,7 @@
 @layer base {
   html {
     scroll-behavior: smooth;
+    -webkit-tap-highlight-color: transparent;
   }
   * {
     @apply border-border outline-ring/50;
@@ -228,5 +238,7 @@
 
   body {
     @apply bg-background text-foreground;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 }

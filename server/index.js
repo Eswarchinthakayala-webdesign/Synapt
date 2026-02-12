@@ -6,6 +6,7 @@ const { Server } = require('socket.io');
 const cors = require('cors');
 const connectDB = require('./config/db');
 const socketHandler = require('./sockets');
+const { createMediaServer, HLS_OUTPUT_DIR } = require('./services/mediaServer');
 
 const app = express();
 const server = http.createServer(app);
@@ -16,21 +17,46 @@ const io = new Server(server, {
     }
 });
 
-// Middleware
+// ─── Middleware ───────────────────────────────────
 app.use(cors());
 app.use(express.json());
 
-// Database Connection
+// Serve HLS media files (the .m3u8 and .ts segments)
+app.use('/live', express.static(HLS_OUTPUT_DIR, {
+    setHeaders: (res) => {
+        res.setHeader('Access-Control-Allow-Origin', '*');
+        res.setHeader('Cache-Control', 'no-cache');
+    }
+}));
+
+// ─── Database Connection ─────────────────────────
 connectDB();
 
-// Sockets
+// ─── Socket.IO ───────────────────────────────────
 socketHandler(io);
 
-// Routes
+// ─── REST API Routes ─────────────────────────────
+app.use('/api/auth', require('./routes/auth'));
 app.use('/api/moderation', require('./routes/moderation'));
 app.use('/api/streams', require('./routes/streams'));
 
+// Health check
+app.get('/api/health', (req, res) => {
+    res.json({ status: 'OK', service: 'Synapt Core', timestamp: new Date() });
+});
+
+// ─── Start Servers ───────────────────────────────
 const PORT = process.env.PORT || 5000;
 server.listen(PORT, () => {
     console.log(`>>> Synapt Logic Core active on port ${PORT}`);
 });
+
+// Start RTMP Media Server (separate from Express)
+try {
+    const mediaServer = createMediaServer();
+    mediaServer.run();
+    console.log('>>> RTMP Server active on port 1935');
+    console.log('>>> HLS Server active on port 8000');
+} catch (err) {
+    console.warn('>>> RTMP Server failed to start:', err.message);
+}
